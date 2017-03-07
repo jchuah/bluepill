@@ -36,8 +36,8 @@
     self.config.xcodePath = [BPUtils runShell:@"/usr/bin/xcode-select -print-path"];
     self.config.runtime = @BP_DEFAULT_RUNTIME;
     self.config.repeatTestsCount = @1;
-    self.config.errorRetriesCount = @2;
-    self.config.failureTolerance = 2;
+    self.config.errorRetriesCount = @0;
+    self.config.failureTolerance = 0;
     self.config.deviceType = @BP_DEFAULT_DEVICE_TYPE;
     self.config.plainOutput = NO;
     self.config.jsonOutput = NO;
@@ -85,6 +85,8 @@
 
 - (void)testTwoBPInstancesWithUITests {
     self.config.numSims = @2;
+    self.config.errorRetriesCount = @2;
+    self.config.failureTolerance = 2;
     //self.config.reuseSimulator = NO;
 
     self.config.testBundlePath = [BPTestHelper sampleAppUITestBundlePath];
