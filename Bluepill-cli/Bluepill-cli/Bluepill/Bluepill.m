@@ -341,6 +341,7 @@ void onInterrupt(int ignore) {
     };
 
     [context.runner launchApplicationAndExecuteTestsWithParser:context.parser andCompletion:handler.defaultHandlerBlock isHostApp:NO];
+    [BPUtils printInfo:INFO withString:[@"Yay, after the launch async call!!!" stringByAppendingString:stepName]];
 }
 
 - (void)connectTestBundleAndTestDaemonWithContext:(BPExecutionContext *)context {
