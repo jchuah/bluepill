@@ -22,7 +22,7 @@
     NSString *hostAppPath = config.appBundlePath;
     if (!hostAppPath || ![fm fileExistsAtPath:hostAppPath isDirectory:&isdir] || !isdir) {
         if (error) {
-            *error = BP_ERROR(@"Could not find app bundle at %@.", path);
+            *error = BP_ERROR(@"Could not find app bundle at %@.", hostAppPath);
         }
         return nil;
     }
