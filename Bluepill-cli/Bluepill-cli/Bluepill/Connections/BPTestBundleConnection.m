@@ -32,6 +32,8 @@
 // runtime
 #import <objc/runtime.h>
 
+#define BP_PROTOCOL_VERSION 22
+
 static const NSString * const testManagerEnv = @"TESTMANAGERD_SIM_SOCK";
 
 @interface BPTestBundleConnection()<XCTestManager_IDEInterface>
@@ -123,7 +125,7 @@ static const NSString * const testManagerEnv = @"TESTMANAGERD_SIM_SOCK";
 - (void)startTestPlan {
     dispatch_async(self.queue, ^{
         NSLog(@"Start test plan!");
-        [self.testBundleProxy _IDE_startExecutingTestPlanWithProtocolVersion:@(22)];
+        [self.testBundleProxy _IDE_startExecutingTestPlanWithProtocolVersion:@(BP_PROTOCOL_VERSION)];
     });
 }
 
@@ -147,13 +149,13 @@ static const NSString * const testManagerEnv = @"TESTMANAGERD_SIM_SOCK";
     if(![[NSFileManager new] fileExistsAtPath:socketString]) {
         NSLog(@"Does not exist - %@", socketString);
     }
-    if(strlen(socketPath) >= 0x68) {
+    if(strnlen(socketPath, 1024) >= 104) {
         NSLog(@"TOO BIG - %@", socketString);
     }
     struct sockaddr_un remote;
     remote.sun_family = AF_UNIX;
-    strcpy(remote.sun_path, socketPath);
-    socklen_t length = (socklen_t)(strlen(remote.sun_path) + sizeof(remote.sun_family) + sizeof(remote.sun_len));
+    strncpy(remote.sun_path, socketPath, 104);
+    socklen_t length = (socklen_t)(strnlen(remote.sun_path, 1024) + sizeof(remote.sun_family) + sizeof(remote.sun_len));
     if (connect(socketFD, (struct sockaddr *)&remote, length) == -1) {
         NSLog(@"ERROR!");
     }

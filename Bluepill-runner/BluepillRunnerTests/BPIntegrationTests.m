@@ -121,7 +121,7 @@
     //XCTAssert([runner.nsTaskList count] == 0);
 }
 
-// This test killed Travis, haven't disable it.
+// This test killed Travis, have to disable it.
 //- (void)testFourBPInstances {
 //    self.config.numSims = @4;
 //    [BPUtils enableDebugOutput:![BPUtils isBuildScript]];

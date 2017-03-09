@@ -72,7 +72,7 @@ static BOOL quiet = NO;
     if (kind == DEBUGINFO && !printDebugInfo) {
         return;
     }
-//    if (quiet) return;
+    if (quiet) return;
     va_list args;
     va_start(args, fmt);
     NSString *txt = [[NSString alloc] initWithFormat:fmt arguments:args];

@@ -90,8 +90,8 @@ static const NSString * const testManagerEnv = @"TESTMANAGERD_SIM_SOCK";
 
     struct sockaddr_un remote;
     remote.sun_family = AF_UNIX;
-    strcpy(remote.sun_path, socketPath);
-    socklen_t length = (socklen_t)(strlen(remote.sun_path) + sizeof(remote.sun_family) + sizeof(remote.sun_len));
+    strncpy(remote.sun_path, socketPath, 104);
+    socklen_t length = (socklen_t)(strnlen(remote.sun_path, 1024) + sizeof(remote.sun_family) + sizeof(remote.sun_len));
     if (connect(socketFD, (struct sockaddr *)&remote, length) == -1) {
         NSLog(@"ERROR!");
     }

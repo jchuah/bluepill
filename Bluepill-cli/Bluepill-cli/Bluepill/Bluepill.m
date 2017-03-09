@@ -9,7 +9,6 @@
 
 #import "Bluepill.h"
 #import "BPConfiguration.h"
-//#import "SimulatorRunner.h"
 #import "BPSimulator.h"
 #import "BPTreeParser.h"
 #import "BPReporters.h"
@@ -53,13 +52,13 @@ void onInterrupt(int ignore) {
 - (instancetype)initWithConfiguration:(BPConfiguration *)config {
     if (self = [super init]) {
         self.config = config;
-//        unsigned int numProps = 0;
-//        objc_property_t *props = class_copyPropertyList([config class], &numProps);
-//        for (NSUInteger i = 0; i < numProps; ++i) {
-//            objc_property_t prop = props[i];
-//            NSString *propName = [[NSString alloc] initWithUTF8String:property_getName(prop)];
-//            [BPUtils printInfo:DEBUGINFO withString:@"[CONFIGURATION] %@: %@", propName, [config valueForKey:propName]];
-//        }
+        unsigned int numProps = 0;
+        objc_property_t *props = class_copyPropertyList([config class], &numProps);
+        for (NSUInteger i = 0; i < numProps; ++i) {
+            objc_property_t prop = props[i];
+            NSString *propName = [[NSString alloc] initWithUTF8String:property_getName(prop)];
+            [BPUtils printInfo:DEBUGINFO withString:@"[CONFIGURATION] %@: %@", propName, [config valueForKey:propName]];
+        }
     }
     return self;
 }
@@ -314,11 +313,7 @@ void onInterrupt(int ignore) {
 
     handler.onSuccess = ^{
         context.pid = __handler.pid;
-//        if (context.config.testRunnerAppPath) {
-            NEXT([__self connectTestBundleAndTestDaemonWithContext:context]);
-//        } else {
-//            NEXT([__self checkProcessWithContext:context]);
-//        }
+        NEXT([__self connectTestBundleAndTestDaemonWithContext:context]);
     };
 
     handler.onError = ^(NSError *error) {
