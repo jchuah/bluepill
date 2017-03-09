@@ -87,7 +87,7 @@
     self.config.testBundlePath = testBundlePath;
     self.config.testing_CrashAppOnLaunch = YES;
     self.config.testing_NoAppWillRun = NO;
-    self.config.stuckTimeout = @10;
+    self.config.stuckTimeout = @3;
     BPExitStatus exitCode = [[[Bluepill alloc ] initWithConfiguration:self.config] run];
     XCTAssert(exitCode == BPExitStatusAppCrashed);
 
@@ -99,7 +99,7 @@
     self.config.testBundlePath = testBundlePath;
     self.config.testing_HangAppOnLaunch = YES;
     self.config.testing_NoAppWillRun = NO;
-    self.config.stuckTimeout = @10;
+    self.config.stuckTimeout = @3;
     BPExitStatus exitCode = [[[Bluepill alloc] initWithConfiguration:self.config] run];
     XCTAssert(exitCode == BPExitStatusAppCrashed);
 
