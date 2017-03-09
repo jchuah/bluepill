@@ -232,7 +232,7 @@
 }
 
 - (void)testReportWithAppHangingTestsSet {
-    self.config.stuckTimeout = @10;
+    self.config.stuckTimeout = @3;
     self.config.plainOutput = YES;
     NSString *testBundlePath = [BPTestHelper sampleAppHangingTestsBundlePath];
     self.config.testBundlePath = testBundlePath;
@@ -256,7 +256,7 @@
  - if a test timeout or crashed, even if we proceed to the next test, we should still return error exit code.
  */
 - (void)testReportWithAppHangingTestsShouldReturnFailure {
-    self.config.stuckTimeout = @10;
+    self.config.stuckTimeout = @3;
     self.config.plainOutput = YES;
     self.config.failureTolerance = 1;
     self.config.errorRetriesCount = @100;
