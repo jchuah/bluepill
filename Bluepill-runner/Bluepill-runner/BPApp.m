@@ -11,6 +11,7 @@
 #import "BPXCTestFile.h"
 #import "BPConstants.h"
 #import "BPConfiguration.h"
+#import "BPUtils.h"
 
 @implementation BPApp
 
@@ -21,10 +22,7 @@
     NSString *hostAppPath = config.appBundlePath;
     if (!hostAppPath || ![fm fileExistsAtPath:hostAppPath isDirectory:&isdir] || !isdir) {
         if (error) {
-            *error = [NSError errorWithDomain:BPErrorDomain
-                                         code:-1
-                                     userInfo:@{ NSLocalizedDescriptionKey:
-                                                     [NSString stringWithFormat:@"Could not find app bundle at %@.", hostAppPath]}];
+            *error = BP_ERROR(@"Could not find app bundle at %@.", path);
         }
         return nil;
     }

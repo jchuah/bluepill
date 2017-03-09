@@ -35,7 +35,7 @@
     self.continueAfterFailure = NO;
     NSString *hostApplicationPath = [BPTestHelper sampleAppPath];
     NSString *testBundlePath = [BPTestHelper sampleAppNegativeTestsBundlePath];
-    self.config = [BPConfiguration new];
+    self.config = [[BPConfiguration alloc] initWithProgram:BP_SLAVE];
     self.config.testBundlePath = testBundlePath;
     self.config.appBundlePath = hostApplicationPath;
     self.config.stuckTimeout = @30;
@@ -83,19 +83,19 @@
 }
 
 - (void)testAppThatCrashesOnLaunch {
-    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBunldePath];
+    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBundlePath];
     self.config.testBundlePath = testBundlePath;
     self.config.testing_CrashAppOnLaunch = YES;
     self.config.testing_NoAppWillRun = NO;
     self.config.stuckTimeout = @3;
     BPExitStatus exitCode = [[[Bluepill alloc ] initWithConfiguration:self.config] run];
-    XCTAssert(exitCode == BPExitStatusAppCrashed);
+    XCTAssert(exitCode == BPExitStatusAppCrashed, @"Expected: %ld Got: %ld", (long)BPExitStatusAppCrashed, (long)exitCode);
 
     self.config.testing_NoAppWillRun = YES;
 }
 
 - (void)testAppThatHangsOnLaunch {
-    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBunldePath];
+    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBundlePath];
     self.config.testBundlePath = testBundlePath;
     self.config.testing_HangAppOnLaunch = YES;
     self.config.testing_NoAppWillRun = NO;
@@ -108,7 +108,7 @@
 
 
 - (void)testRunningOnlyCertainTestcases {
-    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBunldePath];
+    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBundlePath];
     self.config.testBundlePath = testBundlePath;
     NSString *tempDir = NSTemporaryDirectory();
     NSString *outputDir = [BPUtils mkdtemp:[NSString stringWithFormat:@"%@/AppPassingTests", tempDir] withError:nil];
@@ -140,7 +140,7 @@
 }
 
 - (void)testRunningAndIgnoringCertainTestCases {
-    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBunldePath];
+    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBundlePath];
     self.config.testBundlePath = testBundlePath;
     NSString *tempDir = NSTemporaryDirectory();
     NSString *outputDir = [BPUtils mkdtemp:[NSString stringWithFormat:@"%@/AppPassingTests", tempDir] withError:nil];
@@ -362,7 +362,7 @@
 
 // Top level test for Bluepill instance
 - (void)testRunWithPassingTestsSet {
-    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBunldePath];
+    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBundlePath];
     self.config.testBundlePath = testBundlePath;
 
     BPExitStatus exitCode = [[[Bluepill alloc ] initWithConfiguration:self.config] run];

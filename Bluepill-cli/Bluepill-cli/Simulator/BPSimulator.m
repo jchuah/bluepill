@@ -146,7 +146,6 @@
 }
 
 - (BOOL)installApplicationAndReturnError:(NSError *__autoreleasing *)error {
-
     NSString *hostBundleId = [SimulatorHelper bundleIdForPath:self.config.appBundlePath];
     NSString *hostBundlePath = self.config.appBundlePath;
 

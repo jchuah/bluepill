@@ -183,7 +183,7 @@ void onInterrupt(int ignore) {
         simulatorLogPath = tmpFileName;
         if (!tmpFileName) {
             simulatorLogPath = [NSString stringWithFormat:@"/tmp/%lu-simulator.log", context.attemptNumber];
-            [BPUtils printError:ERROR withString:@"ERROR: %@\nLeaving log in %@", [err localizedDescription], simulatorLogPath];
+            [BPUtils printInfo:ERROR withString:@"ERROR: %@\nLeaving log in %@", [err localizedDescription], simulatorLogPath];
         }
     }
 
@@ -232,7 +232,7 @@ void onInterrupt(int ignore) {
 
     handler.onError = ^(NSError *error) {
         [[BPStats sharedStats] addSimulatorCreateFailure];
-        [BPUtils printError:ERROR withString:@"%@", [error localizedDescription]];
+        [BPUtils printInfo:ERROR withString:@"%@", [error localizedDescription]];
         // If we failed to create the simulator, there's no reason for us to try to delete it, which can just cause more issues
         if (--__self.maxCreateTries > 0) {
             [BPUtils printInfo:INFO withString:@"Relaunching the simulator due to a BAD STATE"];
@@ -246,7 +246,7 @@ void onInterrupt(int ignore) {
     handler.onTimeout = ^{
         [[BPStats sharedStats] addSimulatorCreateFailure];
         [[BPStats sharedStats] endTimer:stepName];
-        [BPUtils printInfo:FAILED withString:[@"Timeout: " stringByAppendingString:stepName]];
+        [BPUtils printInfo:ERROR withString:[@"Timeout: " stringByAppendingString:stepName]];
     };
 
     self.maxInstallTries = [self.config.maxInstallTries integerValue];
@@ -269,7 +269,7 @@ void onInterrupt(int ignore) {
 
     if (!success) {
         [[BPStats sharedStats] addSimulatorInstallFailure];
-        [BPUtils printError:ERROR withString:@"Could not install app in simulator: %@", [error localizedDescription]];
+        [BPUtils printInfo:ERROR withString:@"Could not install app in simulator: %@", [error localizedDescription]];
         if (--__self.maxInstallTries > 0) {
             if ([[error description] containsString:@"Booting"]) {
                 [BPUtils printInfo:INFO withString:@"Simulator is still booting. Will defer install for 1 minute."];
@@ -318,7 +318,7 @@ void onInterrupt(int ignore) {
 
     handler.onError = ^(NSError *error) {
         [[BPStats sharedStats] endTimer:RUN_TESTS(context.attemptNumber)];
-        [BPUtils printError:ERROR withString:@"Could not launch app and tests: %@", [error localizedDescription]];
+        [BPUtils printInfo:ERROR withString:@"Could not launch app and tests: %@", [error localizedDescription]];
         if (--__self.maxLaunchTries > 0) {
             [BPUtils printInfo:INFO withString:@"Relaunching the simulator due to a BAD STATE"];
             context.runner = [__self createSimulatorRunnerWithContext:context];
@@ -493,7 +493,7 @@ void onInterrupt(int ignore) {
 
     handler.onError = ^(NSError *error) {
         [[BPStats sharedStats] addSimulatorDeleteFailure];
-        [BPUtils printError:ERROR withString:@"%@", [error localizedDescription]];
+        [BPUtils printInfo:ERROR withString:@"%@", [error localizedDescription]];
         NEXT([__self finishWithContext:context]);
     };
 

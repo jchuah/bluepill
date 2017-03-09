@@ -28,8 +28,8 @@
 
     // Put setup code here. This method is called before the invocation of each test method in the class.
     NSString *hostApplicationPath = [BPTestHelper sampleAppPath];
-    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBunldePath];
-    self.config = [BPConfiguration new];
+    NSString *testBundlePath = [BPTestHelper sampleAppBalancingTestsBundlePath];
+    self.config = [[BPConfiguration alloc] initWithProgram:BP_MASTER];
     self.config.testBundlePath = testBundlePath;
     self.config.appBundlePath = hostApplicationPath;
     self.config.stuckTimeout = @30;
@@ -45,7 +45,9 @@
     self.config.junitOutput = NO;
     NSString *path = @"testScheme.xcscheme";
     self.config.schemePath = [[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingPathComponent:path];
-    self.config.quiet = [BPUtils isBuildScript];
+    NSLog(@"BPBuildScript = %hhd", [BPUtils isBuildScript]);
+    [BPUtils enableDebugOutput:![BPUtils isBuildScript]];
+    [BPUtils quietMode:[BPUtils isBuildScript]];
 }
 
 - (void)tearDown {

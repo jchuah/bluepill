@@ -134,7 +134,7 @@
 
 - (void)updateExecutedTestCaseList:(NSString *)testName inClass:(NSString *)testClass {
     if (testName == nil || testClass == nil) {
-        [BPUtils printError:DEBUGINFO withString:@"Attempting to add empty test name or class to the executed list"];
+        [BPUtils printInfo:DEBUGINFO withString:@"Attempting to add empty test name or class to the executed list"];
         return;
     }
     if (self.executedTests == nil) {
@@ -220,7 +220,7 @@
     if (![[self.device stateString] isEqualToString:@"Shutdown"] && !self.config.testing_NoAppWillRun) {
         [BPUtils printInfo:ERROR withString:@"Will kill the process with appPID: %d", self.appPID];
         NSAssert(self.appPID > 0, @"Failed to find a valid PID");
-        if ((kill(self.appPID, 0) == 0) && (kill(self.appPID, SIGTERM) < 0)) {
+        if ((kill(self.appPID, 0) == 0) && (kill(self.appPID, SIGKILL) < 0)) {
             [BPUtils printInfo:ERROR withString:@"Failed to kill the process with appPID: %d: %s",
                 self.appPID, strerror(errno)];
         }
